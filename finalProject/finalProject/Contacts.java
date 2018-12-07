@@ -38,6 +38,14 @@ public class Contacts implements Comparable<Contacts> {
       this.phoneNumber = phoneNumber;
    }
    
+   public String getBusinessName() { return businessName; }
+   public String getFirstName() { return firstName; }
+   public String getLastName() { return lastName; }
+   public String getStreetAddress() { return streetAddress; }
+   public String getEmail() { return email; }
+   public String getPhoneNumber() { return phoneNumber; }
+
+   
    public String toString() {
       String toStringResult = businessName + " " + firstName + " " + lastName;
       return toStringResult;

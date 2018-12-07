@@ -3,19 +3,22 @@ package finalProject.finalProject;
 import java.io.*;
 import ch07.trees.*;
 import java.util.Scanner;
+import java.util.*;
 
 public class ContactList {
    
    public static void main(String[] args) {
       String fileName = "MOCK_DATA.csv";
       UsingContactsFile contactsFile = new UsingContactsFile(fileName);
-      BinarySearchTree<Contacts> contactList = contactsFile.importContactListCSV();
+      Object[] temp = contactsFile.importContactListCSV();
+      BinarySearchTree<Contacts> contactListBN = (BinarySearchTree)temp[0];
+      BinarySearchTree<Contacts> contactListLN = (BinarySearchTree)temp[1];
       Scanner scInt = new Scanner(System.in);
       Scanner scStr = new Scanner(System.in);
       int response = 0;
       
       while(response != 5) {
-         System.out.println("Welcome to your contact list. What do you want to do?:");
+         System.out.println("\n\nWelcome to your contact list. What do you want to do?:");
          System.out.println("1. Search contacts.");
          System.out.println("2. Add contact.");
          System.out.println("3. Remove contact.");
@@ -25,67 +28,52 @@ public class ContactList {
          response = scInt.nextInt();
          
          if(response == 1) {
-            String businessName = null;
-            String firstName = null;
-            String lastName = null;
-            String streetAddress = null;
-            String email = null;
-            String phoneNumber = null;
-            String searchTerm = null;
+            String businessName, lastName, searchTerm;
+            List<Contacts> searchReturn = null;
+            Contacts newContact = null;
             
-            int additionalFilter = 0;            
-            do {
-               System.out.println("Which field would you like to filter by?");
-               System.out.println("1. Business Name.");
-               System.out.println("2. First Name.");
-               System.out.println("3. Last Name.");
-               System.out.println("4. Street Address.");
-               System.out.println("5. Email.");
-               System.out.println("6. Phone number.");
-               System.out.print("Your choice (enter corresponding number): ");
-               int fieldFilter = scInt.nextInt();
-   
-               switch(fieldFilter) {
-                  case 1:
-                     System.out.print("Enter business name: ");
-                     searchTerm = scStr.nextLine();
-                     businessName = searchTerm;            
-                     break;
-                  case 2:
-                     System.out.print("Enter first name: ");
-                     searchTerm = scStr.nextLine(); 
-                     firstName = searchTerm;
-                     break;
-                  case 3:
-                     System.out.print("Enter last name: ");
-                     searchTerm = scStr.nextLine(); 
-                     lastName = searchTerm;
-                     break;
-                  case 4:
-                     System.out.print("Enter street address: ");
-                     searchTerm = scStr.nextLine(); 
-                     streetAddress = searchTerm;
-                     break;
-                  case 5:
-                     System.out.print("Enter email: ");
-                     searchTerm = scStr.nextLine(); 
-                     email = searchTerm;
-                     break;
-                  case 6:
-                     System.out.print("Enter phone number: ");
-                     searchTerm = scStr.nextLine(); 
-                     phoneNumber = searchTerm;
-                     break;
-                  }
+            System.out.println("Which field would you like to filter by?");
+            System.out.println("1. Business Name.");
+            System.out.println("2. Last Name.");
+            System.out.print("Your choice (enter corresponding number): ");
+            int fieldFilter = scInt.nextInt();
+
+            switch(fieldFilter) {
+               case 1:
+                  System.out.print("Enter business name: ");
+                  searchTerm = scStr.nextLine();
+                  businessName = searchTerm;    
                   
-                  System.out.println("Filter by an additional term?(1 for yes, 0 for no): ");
-                  additionalFilter = scInt.nextInt();
-               } while(additionalFilter == 1);
+                  newContact = new Contacts(businessName, null, null, null, null, null);
+                  searchReturn = contactListBN.getAll(newContact);
+                  break;
+               case 2:
+                  System.out.print("Enter last name: ");
+                  searchTerm = scStr.nextLine(); 
+                  lastName = searchTerm;
+                  
+                  newContact = new Contacts(null, null, lastName, null, null, null);
+                  searchReturn = contactListLN.getAll(newContact);
+                  break;
+            }
             
-            Contacts newContact = new Contacts(businessName, firstName, lastName, streetAddress, email, phoneNumber);
-            Contacts searchReturn = contactList.get(newContact);
             if(searchReturn!=null){
-               System.out.println(searchReturn.toString());
+               String format = "%-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
+               System.out.printf(format, "BusinessName",
+                                         "FirstName",
+                                         "LastName",
+                                         "StreetAddress",
+                                         "Email",
+                                         "phoneNumber");
+                                         
+               for(int i = 0; i < searchReturn.size(); i++) {
+                  System.out.printf(format, searchReturn.get(i).getBusinessName(), 
+                                     searchReturn.get(i).getFirstName(),
+                                     searchReturn.get(i).getLastName(),
+                                     searchReturn.get(i).getStreetAddress(),
+                                     searchReturn.get(i).getEmail(),
+                                     searchReturn.get(i).getPhoneNumber());
+               }
             } else {
                System.out.println("No Results Found");
             }      
@@ -110,7 +98,8 @@ public class ContactList {
             String phoneNumber = scStr.nextLine();
             
             Contacts newContact = new Contacts(businessName, firstName, lastName, streetAddress, email, phoneNumber);
-            contactList.add(newContact);
+            contactListBN.add(newContact);
+            contactListLN.add(newContact);
             System.out.println("Contact added!\n\n\n\n\n");
          } else if(response == 3) {
             
