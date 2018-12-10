@@ -27,8 +27,9 @@ public class ContactList {
          
          if(response == 1) {
             String businessName, lastName, searchTerm;
-            List<Contacts> searchReturn = null;
+            ContactsArrayCollection searchReturn = null;
             Contacts newContact = null;
+            int sortOrFilter = 0;
             
             System.out.print("Enter business name or last name: ");
             searchTerm = scStr.nextLine();
@@ -36,24 +37,61 @@ public class ContactList {
             searchReturn = contactList.getAll(searchTerm);
             
             if(searchReturn!=null){
-               String format = "%-10.10s %-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
-               System.out.printf(format, "ID",
-                                         "BusinessName",
-                                         "FirstName",
-                                         "LastName",
-                                         "StreetAddress",
-                                         "Email",
-                                         "phoneNumber");
-                                         
-               for(int i = 0; i < searchReturn.size(); i++) {
-                  System.out.printf(format, searchReturn.get(i).getUniqueID(),
-                                     searchReturn.get(i).getBusinessName(), 
-                                     searchReturn.get(i).getFirstName(),
-                                     searchReturn.get(i).getLastName(),
-                                     searchReturn.get(i).getStreetAddress(),
-                                     searchReturn.get(i).getEmail(),
-                                     searchReturn.get(i).getPhoneNumber());
-               }
+               do {
+                  String format = "%-10.10s %-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
+                  System.out.printf(format, "ID",
+                                            "BusinessName",
+                                            "FirstName",
+                                            "LastName",
+                                            "StreetAddress",
+                                            "Email",
+                                            "phoneNumber");
+                                            
+                  for(int i = 0; i < searchReturn.size(); i++) {
+                     System.out.printf(format, searchReturn.getIndex(i).getUniqueID(),
+                                        searchReturn.getIndex(i).getBusinessName(), 
+                                        searchReturn.getIndex(i).getFirstName(),
+                                        searchReturn.getIndex(i).getLastName(),
+                                        searchReturn.getIndex(i).getStreetAddress(),
+                                        searchReturn.getIndex(i).getEmail(),
+                                        searchReturn.getIndex(i).getPhoneNumber());
+                  }
+                  
+                  while(true) {
+                     System.out.println("\n\nSort(1), filter results(2), or main menu(0)?: ");
+                     sortOrFilter = scInt.nextInt();
+                     if(sortOrFilter == 1 || sortOrFilter == 2 || sortOrFilter == 0) {
+                        break;
+                     }
+                  }
+                  
+                  if(sortOrFilter == 1) {
+                     while(true) {
+                        System.out.println("Which field would you like to sort by?");
+                        System.out.print("1 for business name, 2 for last name: ");
+                        int sortByField = scInt.nextInt();
+                        if(sortByField == 1 || sortByField == 2) {
+                           searchReturn.sortElements(sortByField);
+                           break;
+                        }
+                     }
+                  }
+                  
+                  if(sortOrFilter == 2) {
+                     while(true) {
+                        System.out.println("Which field would you like to filter?");
+                        System.out.print("1 for business name, 2 for last name: ");
+                        int filterByField = scInt.nextInt();
+                        if(filterByField == 1 || filterByField == 2) {
+                           System.out.print("Filter term: ");
+                           String filterTerm = scStr.nextLine();
+                           searchReturn.filterElements(filterByField, filterTerm);
+                           System.out.println("\n");
+                           break;
+                        }
+                     }
+                  }
+               } while (sortOrFilter != 0);
             } else {
                System.out.println("No Results Found");
             }      

@@ -9,14 +9,14 @@ public class ContactsLinkedCollection extends LinkedCollection<Contacts> {
       super();
    }
    
-   public List<Contacts> getAll(String target)
+   public ContactsArrayCollection getAll(String target)
     // Searches the collection for an occurence of an element e such that
     // e.equals(target). If successful, sets instance variables
     // found to true, location to node containing e, and previous
     // to the node that links to location. If not successful, sets 
     // found to false.
    {
-      List<Contacts> searchResults = new ArrayList<Contacts>();
+      ContactsArrayCollection searchResults = new ContactsArrayCollection();
       location = head;
       found = false;
    
