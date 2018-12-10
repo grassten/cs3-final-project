@@ -5,6 +5,7 @@
 // Null elements are not allowed. Duplicate elements are allowed.
 // One constructor is provided, one that creates an empty collection.
 //---------------------------------------------------------------------------
+package ch05.collections;
 
 import support.LLNode;
 

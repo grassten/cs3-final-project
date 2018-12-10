@@ -1,7 +1,7 @@
 package finalProject.finalProject;
 
 import java.io.*;
-import ch07.trees.*;
+import ch05.collections.*;
 import java.util.Scanner;
 import java.util.*;
 
@@ -10,9 +10,7 @@ public class ContactList {
    public static void main(String[] args) {
       String fileName = "MOCK_DATA.csv";
       UsingContactsFile contactsFile = new UsingContactsFile(fileName);
-      Object[] temp = contactsFile.importContactListCSV();
-      BinarySearchTree<Contacts> contactListBN = (BinarySearchTree)temp[0];
-      BinarySearchTree<Contacts> contactListLN = (BinarySearchTree)temp[1];
+      ContactsLinkedCollection contactList = contactsFile.importContactListCSV();
       Scanner scInt = new Scanner(System.in);
       Scanner scStr = new Scanner(System.in);
       int response = 0;
@@ -32,34 +30,15 @@ public class ContactList {
             List<Contacts> searchReturn = null;
             Contacts newContact = null;
             
-            System.out.println("Which field would you like to filter by?");
-            System.out.println("1. Business Name.");
-            System.out.println("2. Last Name.");
-            System.out.print("Your choice (enter corresponding number): ");
-            int fieldFilter = scInt.nextInt();
+            System.out.print("Enter business name or last name: ");
+            searchTerm = scStr.nextLine();
 
-            switch(fieldFilter) {
-               case 1:
-                  System.out.print("Enter business name: ");
-                  searchTerm = scStr.nextLine();
-                  businessName = searchTerm;    
-                  
-                  newContact = new Contacts(businessName, null, null, null, null, null);
-                  searchReturn = contactListBN.getAll(newContact);
-                  break;
-               case 2:
-                  System.out.print("Enter last name: ");
-                  searchTerm = scStr.nextLine(); 
-                  lastName = searchTerm;
-                  
-                  newContact = new Contacts(null, null, lastName, null, null, null);
-                  searchReturn = contactListLN.getAll(newContact);
-                  break;
-            }
+            searchReturn = contactList.getAll(searchTerm);
             
             if(searchReturn!=null){
-               String format = "%-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
-               System.out.printf(format, "BusinessName",
+               String format = "%-10.10s %-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
+               System.out.printf(format, "ID",
+                                         "BusinessName",
                                          "FirstName",
                                          "LastName",
                                          "StreetAddress",
@@ -67,7 +46,8 @@ public class ContactList {
                                          "phoneNumber");
                                          
                for(int i = 0; i < searchReturn.size(); i++) {
-                  System.out.printf(format, searchReturn.get(i).getBusinessName(), 
+                  System.out.printf(format, searchReturn.get(i).getUniqueID(),
+                                     searchReturn.get(i).getBusinessName(), 
                                      searchReturn.get(i).getFirstName(),
                                      searchReturn.get(i).getLastName(),
                                      searchReturn.get(i).getStreetAddress(),
@@ -98,18 +78,57 @@ public class ContactList {
             String phoneNumber = scStr.nextLine();
             
             Contacts newContact = new Contacts(businessName, firstName, lastName, streetAddress, email, phoneNumber);
-            contactListBN.add(newContact);
-            contactListLN.add(newContact);
+            contactList.add(newContact);
             System.out.println("Contact added!\n\n\n\n\n");
          } else if(response == 3) {
+            System.out.print("Enter ID of contact to remove: ");
+            int idToRemove = scInt.nextInt();
             
+            if(contactList.removeContact(idToRemove)) {
+               System.out.println("Contact removed successfully.");
+            } else {
+               System.out.println("Contact not found");
+            }
+                       
          } else if(response == 4) {
-         
-         } else if(response == 5) {
+            System.out.print("Which record would you like to update? (input ID): ");
+            int IDToUpdate = scInt.nextInt();
+            
+            if(!contactList.findByID(IDToUpdate)) {
+               System.out.println("Contact not found.");
+            } else {
+               System.out.println("Input the following data.");
+               System.out.print("Business Name: ");
+               String businessName = scStr.nextLine();
+               
+               System.out.print("First Name: ");
+               String firstName = scStr.nextLine();
+               
+               System.out.print("Last Name: ");
+               String lastName = scStr.nextLine();
+               
+               System.out.print("Street Address: ");
+               String streetAddress = scStr.nextLine();
+               
+               System.out.print("Email: ");
+               String email = scStr.nextLine();
+               
+               System.out.print("Phone Number: ");
+               String phoneNumber = scStr.nextLine();
+            
+               Contacts newContact = new Contacts(IDToUpdate, businessName, firstName, lastName, streetAddress, email, phoneNumber);
+               contactList.changeContact(IDToUpdate, newContact);
+               System.out.println("Contact updated!\n\n\n\n\n");
+            }
+         } else if (response == 5) {
          } else {
             System.out.println("Invalid Input.");
          }
       }
-      //overwrite old contacts file and save a backup possibly
+      try{
+         contactsFile.writeToContactsCSV(contactList);
+      } finally {
+         return;
+      }
    }
 }

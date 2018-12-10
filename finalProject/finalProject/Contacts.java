@@ -2,10 +2,24 @@ package finalProject.finalProject;
 
 import java.io.*;
 
-public class Contacts implements Comparable<Contacts> {
-   public String businessName, firstName, lastName, streetAddress, email, phoneNumber;
+public class Contacts {
+   protected String businessName, firstName, lastName, streetAddress, email, phoneNumber;
+   protected int counter = 1;
+   protected static int instanceCounter = 1;
    
    Contacts(String businessName, String firstName, String lastName, String streetAddress, String email, String phoneNumber) {
+      this.businessName = businessName;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.streetAddress = streetAddress;
+      this.email = email;
+      this.phoneNumber = phoneNumber;
+      counter = instanceCounter;
+      instanceCounter++;
+   }
+   
+   Contacts(int uniqueID, String businessName, String firstName, String lastName, String streetAddress, String email, String phoneNumber) {
+      counter = uniqueID;
       this.businessName = businessName;
       this.firstName = firstName;
       this.lastName = lastName;
@@ -44,14 +58,11 @@ public class Contacts implements Comparable<Contacts> {
    public String getStreetAddress() { return streetAddress; }
    public String getEmail() { return email; }
    public String getPhoneNumber() { return phoneNumber; }
+   public int getUniqueID() { return counter; }
 
    
    public String toString() {
       String toStringResult = businessName + " " + firstName + " " + lastName;
       return toStringResult;
-   }
-   
-   public int compareTo(Contacts o) {
-      return this.businessName.compareToIgnoreCase(o.businessName);
    }
 }
