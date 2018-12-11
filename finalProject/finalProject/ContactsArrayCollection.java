@@ -15,29 +15,49 @@ public class ContactsArrayCollection extends ArrayCollection<Contacts> {
    }
    
    // mostly copied from textbook, does most of the work for merge sort
-   // additional parameter field says whether to sort by businessName or lastName
-   private void merge (int leftFirst, int leftLast, int rightFirst, int rightLast, int field) {
+   // additional parameter fields say whether to sort by businessName or lastName, and ascending or desc
+   private void merge (int leftFirst, int leftLast, int rightFirst, int rightLast, int field, int ascOrDesc) {
       Contacts[] tempArray = new Contacts[numElements];
       int index = leftFirst;
       int saveFirst = leftFirst;
       
       while ((leftFirst <= leftLast) && (rightFirst <= rightLast)) {
          if (field == 1) {
-            if (elements[leftFirst].getBusinessName().compareTo(elements[rightFirst].getBusinessName()) < 0) {
-               tempArray[index] = elements[leftFirst];
-               leftFirst++;
+            if (ascOrDesc == 1) {
+               if (elements[leftFirst].getBusinessName().compareTo(elements[rightFirst].getBusinessName()) < 0) {
+                  tempArray[index] = elements[leftFirst];
+                  leftFirst++;
+               } else {
+                  tempArray[index] = elements[rightFirst];
+                  rightFirst++;
+               }
             } else {
-               tempArray[index] = elements[rightFirst];
-               rightFirst++;
+               if (elements[leftFirst].getBusinessName().compareTo(elements[rightFirst].getBusinessName()) > 0) {
+                  tempArray[index] = elements[leftFirst];
+                  leftFirst++;
+               } else {
+                  tempArray[index] = elements[rightFirst];
+                  rightFirst++;
+               }            
             }
-         } else if (field == 2) {
-            if (elements[leftFirst].getLastName().compareTo(elements[rightFirst].getLastName()) < 0) {
-               tempArray[index] = elements[leftFirst];
-               leftFirst++;
+         } else {
+            if (ascOrDesc == 1) {
+               if (elements[leftFirst].getLastName().compareTo(elements[rightFirst].getLastName()) < 0) {
+                  tempArray[index] = elements[leftFirst];
+                  leftFirst++;
+               } else {
+                  tempArray[index] = elements[rightFirst];
+                  rightFirst++;
+               }
             } else {
-               tempArray[index] = elements[rightFirst];
-               rightFirst++;
-            }         
+               if (elements[leftFirst].getLastName().compareTo(elements[rightFirst].getLastName()) > 0) {
+                  tempArray[index] = elements[leftFirst];
+                  leftFirst++;
+               } else {
+                  tempArray[index] = elements[rightFirst];
+                  rightFirst++;
+               }            
+            }   
          }
          index++;
       }
@@ -60,19 +80,19 @@ public class ContactsArrayCollection extends ArrayCollection<Contacts> {
    }
    
    // splits array into a bunch (N) subarrays and passes to mergeSort
-   private void mergeSort(int first, int last, int field) {
+   private void mergeSort(int first, int last, int field, int ascOrDesc) {
       if (first < last) {
          int middle = (first + last) / 2;
-         mergeSort(first, middle, field);
-         mergeSort(middle + 1, last, field);
-         merge(first, middle, middle+1, last, field);
+         mergeSort(first, middle, field, ascOrDesc);
+         mergeSort(middle + 1, last, field, ascOrDesc);
+         merge(first, middle, middle+1, last, field, ascOrDesc);
       }
    }
    
    // method called by main ContactList program
    // simply starts off mergesort with the first & last element position of array
-   public void sortElements(int field) {
-      mergeSort(0, numElements-1, field);         
+   public void sortElements(int field, int ascOrDesc) {
+      mergeSort(0, numElements-1, field, ascOrDesc);         
    }
    
    // used by filter method

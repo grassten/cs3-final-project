@@ -75,8 +75,12 @@ public class ContactList {
                         System.out.print("1 for business name, 2 for last name: ");
                         int sortByField = scInt.nextInt();
                         if(sortByField == 1 || sortByField == 2) {
-                           searchReturn.sortElements(sortByField);
-                           break;
+                           System.out.print("Ascending(1) or descending(2)?: ");
+                           int ascOrDesc = scInt.nextInt();
+                           if(ascOrDesc == 1 || ascOrDesc == 2) {
+                              searchReturn.sortElements(sortByField, ascOrDesc);
+                              break;
+                           }
                         }
                      }
                   }
