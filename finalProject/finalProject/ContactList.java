@@ -16,7 +16,7 @@ public class ContactList {
       int response = 0;
       
       while(response != 5) {
-         System.out.println("\n\nWelcome to your contact list. What do you want to do?:");
+         System.out.println("\n\n\n\n\nWelcome to your contact list. What do you want to do?:");
          System.out.println("1. Search contacts.");
          System.out.println("2. Add contact.");
          System.out.println("3. Remove contact.");

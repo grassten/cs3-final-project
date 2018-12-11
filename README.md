@@ -3,7 +3,7 @@ Final project for data structures and algorithms course, written in Java. In pro
 
 <h3> to do</h3>
 <ul>
-  <li>add sort functionality</li>
-  <li>create gui</li>
+  ~~<li>add sort functionality</li>~~
+  <li>add documentation in code</li>
 </ul>
   
