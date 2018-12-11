@@ -16,7 +16,7 @@ public class ContactList {
       int response = 0;
       
       while(response != 5) {
-         System.out.println("\n\n\n\n\nWelcome to your contact list. What do you want to do?:");
+         System.out.println("\nWelcome to your contact list.");
          System.out.println("1. Search contacts.");
          System.out.println("2. Add contact.");
          System.out.println("3. Remove contact.");
@@ -24,8 +24,9 @@ public class ContactList {
          System.out.println("5. Exit application.");
          System.out.print("Choice: ");
          response = scInt.nextInt();
+         System.out.println();
          
-         if(response == 1) {
+         if(response == 1) { // search
             String businessName, lastName, searchTerm;
             ContactsArrayCollection searchReturn = null;
             Contacts newContact = null;
@@ -36,9 +37,12 @@ public class ContactList {
 
             searchReturn = contactList.getAll(searchTerm);
             
-            if(searchReturn!=null){
+            // formats search return data 
+            if(searchReturn.size() != 0){
                do {
                   String format = "%-10.10s %-15.15s %-15.15s %-15.15s %-30.30s %-30.30s %-20.20s%n";
+                  
+                  System.out.println("\n");
                   System.out.printf(format, "ID",
                                             "BusinessName",
                                             "FirstName",
@@ -58,14 +62,14 @@ public class ContactList {
                   }
                   
                   while(true) {
-                     System.out.println("\n\nSort(1), filter results(2), or main menu(0)?: ");
+                     System.out.println("\nSort(1), filter results(2), or main menu(0)?: ");
                      sortOrFilter = scInt.nextInt();
                      if(sortOrFilter == 1 || sortOrFilter == 2 || sortOrFilter == 0) {
                         break;
                      }
                   }
                   
-                  if(sortOrFilter == 1) {
+                  if(sortOrFilter == 1) { // sort dataset
                      while(true) {
                         System.out.println("Which field would you like to sort by?");
                         System.out.print("1 for business name, 2 for last name: ");
@@ -77,7 +81,7 @@ public class ContactList {
                      }
                   }
                   
-                  if(sortOrFilter == 2) {
+                  if(sortOrFilter == 2) { // filter dataset
                      while(true) {
                         System.out.println("Which field would you like to filter?");
                         System.out.print("1 for business name, 2 for last name: ");
@@ -86,7 +90,6 @@ public class ContactList {
                            System.out.print("Filter term: ");
                            String filterTerm = scStr.nextLine();
                            searchReturn.filterElements(filterByField, filterTerm);
-                           System.out.println("\n");
                            break;
                         }
                      }
@@ -95,7 +98,8 @@ public class ContactList {
             } else {
                System.out.println("No Results Found");
             }      
-         } else if(response == 2) {
+         
+         } else if(response == 2) { // add contact
             System.out.println("Input the following data.");
             System.out.print("Business Name: ");
             String businessName = scStr.nextLine();
@@ -117,18 +121,22 @@ public class ContactList {
             
             Contacts newContact = new Contacts(businessName, firstName, lastName, streetAddress, email, phoneNumber);
             contactList.add(newContact);
-            System.out.println("Contact added!\n\n\n\n\n");
-         } else if(response == 3) {
+            System.out.println("Contact added!\n");
+         
+         } else if(response == 3) { // remove contact
             System.out.print("Enter ID of contact to remove: ");
-            int idToRemove = scInt.nextInt();
-            
-            if(contactList.removeContact(idToRemove)) {
-               System.out.println("Contact removed successfully.");
-            } else {
-               System.out.println("Contact not found");
+            try {
+               int idToRemove = scInt.nextInt();
+               if(contactList.removeContact(idToRemove)) {
+                  System.out.println("Contact removed successfully.");
+               } else {
+                  System.out.println("Contact not found");
+               }
+            } catch (Exception e) {
+               System.out.println("Invalid Input");
             }
-                       
-         } else if(response == 4) {
+         
+         } else if(response == 4) { // change contact
             System.out.print("Which record would you like to update? (input ID): ");
             int IDToUpdate = scInt.nextInt();
             
@@ -163,6 +171,8 @@ public class ContactList {
             System.out.println("Invalid Input.");
          }
       }
+      
+      // if user presses 5, writes final dataset to file
       try{
          contactsFile.writeToContactsCSV(contactList);
       } finally {

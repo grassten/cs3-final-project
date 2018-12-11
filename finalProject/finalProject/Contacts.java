@@ -18,6 +18,7 @@ public class Contacts {
       instanceCounter++;
    }
    
+   // constructor used in change contact, where uniqueID should stay the same.
    Contacts(int uniqueID, String businessName, String firstName, String lastName, String streetAddress, String email, String phoneNumber) {
       counter = uniqueID;
       this.businessName = businessName;
@@ -31,23 +32,18 @@ public class Contacts {
    public void setBusinessName(String businessName) {
       this.businessName = businessName;
    }
-   
    public void setFirstName(String firstName) {
       this.firstName = firstName;
    }
-   
    public void setLastName(String lastName) {
       this.lastName = lastName;
    }
-   
    public void setStreetAddress(String streetAddress) {
       this.streetAddress = streetAddress;
    }
-   
    public void setEmail(String email) {
       this.email = email;
    }
-   
    public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
    }
@@ -59,10 +55,4 @@ public class Contacts {
    public String getEmail() { return email; }
    public String getPhoneNumber() { return phoneNumber; }
    public int getUniqueID() { return counter; }
-
-   
-   public String toString() {
-      String toStringResult = businessName + " " + firstName + " " + lastName;
-      return toStringResult;
-   }
 }

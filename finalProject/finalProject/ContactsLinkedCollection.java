@@ -4,18 +4,16 @@ import java.io.*;
 import java.util.*;
 import ch05.collections.*;
 
+// linked list collection object to hold full contact list
 public class ContactsLinkedCollection extends LinkedCollection<Contacts> {
    public ContactsLinkedCollection() {
       super();
    }
    
-   public ContactsArrayCollection getAll(String target)
-    // Searches the collection for an occurence of an element e such that
-    // e.equals(target). If successful, sets instance variables
-    // found to true, location to node containing e, and previous
-    // to the node that links to location. If not successful, sets 
-    // found to false.
-   {
+   // slightly modified get method from textbook
+   // after finding a result, does not stop, and adds result to a separate collection
+   // stops after parsing entire linked list
+   public ContactsArrayCollection getAll(String target) {
       ContactsArrayCollection searchResults = new ContactsArrayCollection();
       location = head;
       found = false;
@@ -37,6 +35,8 @@ public class ContactsLinkedCollection extends LinkedCollection<Contacts> {
       return searchResults;
    }
    
+   // returns full collection as a list to UsingContactsFile
+   // used to simplify output of data back to CSV
    public List<Contacts> fullList() {
       List<Contacts> searchResults = new ArrayList<Contacts>();
       location = head;
@@ -48,6 +48,7 @@ public class ContactsLinkedCollection extends LinkedCollection<Contacts> {
       return searchResults;
    }
    
+   // same find method as textbook, only matches the uniqueID parameter of the objects
    protected boolean findByID(int uniqueID) {
       location = head;
       found = false;

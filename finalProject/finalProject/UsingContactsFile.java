@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.*;
 import ch05.collections.*;
 
+// handles file import and export
 public class UsingContactsFile {
 
    String fileName;
@@ -13,6 +14,9 @@ public class UsingContactsFile {
       this.fileName = fileName;
    }
    
+   // reads the input file line by line, splits into array of strings,
+   // and then uses array of strings to build contact objects.
+   // then adds each contact object to a Linked Collection
    public ContactsLinkedCollection importContactListCSV() {
       File file = new File(fileName);
       

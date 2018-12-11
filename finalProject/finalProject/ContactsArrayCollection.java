@@ -2,22 +2,20 @@ package finalProject.finalProject;
 
 import ch05.collections.*;
 
+// Array based collection data structure used to hold search results
 public class ContactsArrayCollection extends ArrayCollection<Contacts> {
 
    public ContactsArrayCollection() {
       elements = new Contacts[DEFCAP];
    }
    
+   // return element by its index, used when printing full result set 
    public Contacts getIndex(int i) {
       return elements[i];
    }
    
-   private void swap(int firstIndex, int secondIndex) {
-      Contacts temp = elements[firstIndex];
-      elements[firstIndex] = elements[secondIndex];
-      elements[secondIndex] = temp;
-   }
-   
+   // mostly copied from textbook, does most of the work for merge sort
+   // additional parameter field says whether to sort by businessName or lastName
    private void merge (int leftFirst, int leftLast, int rightFirst, int rightLast, int field) {
       Contacts[] tempArray = new Contacts[numElements];
       int index = leftFirst;
@@ -61,7 +59,8 @@ public class ContactsArrayCollection extends ArrayCollection<Contacts> {
       }
    }
    
-   public void mergeSort(int first, int last, int field) {
+   // splits array into a bunch (N) subarrays and passes to mergeSort
+   private void mergeSort(int first, int last, int field) {
       if (first < last) {
          int middle = (first + last) / 2;
          mergeSort(first, middle, field);
@@ -70,16 +69,21 @@ public class ContactsArrayCollection extends ArrayCollection<Contacts> {
       }
    }
    
+   // method called by main ContactList program
+   // simply starts off mergesort with the first & last element position of array
    public void sortElements(int field) {
       mergeSort(0, numElements-1, field);         
    }
    
-   protected void removeElementByIndex(int i) {
+   // used by filter method
+   private void removeElementByIndex(int i) {
       elements[i] = elements[numElements - 1];
       elements[numElements - 1] = null;
       numElements--;  
    }
    
+   // filters by comparing either businessName or lastName
+   // passed by user to the corresponding parameter of each object in the array.
    public void filterElements(int field, String filterTerm) {
       if(field == 1) {
          for(int i = 0; i < numElements; i++) {
